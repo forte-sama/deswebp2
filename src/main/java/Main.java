@@ -8,11 +8,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static spark.Spark.*;
+import static spark.debug.DebugScreen.enableDebugScreen;
 
 public class Main {
     public static void main(String[] args) {
 
+        //indicar ruta de archivos publicos.
+        staticFileLocation("/public");
+        //agregar pantalla de debug. Solo en desarrollo.
+        enableDebugScreen();
 
+        //TODO Buscar nueva forma de usar configuracion de freemarker
         Configuration configuration = new Configuration();
         configuration.setClassForTemplateLoading(Main.class, "/templates");
         FreeMarkerEngine freeMarkerEngine = new FreeMarkerEngine(configuration);
