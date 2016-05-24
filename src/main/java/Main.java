@@ -10,19 +10,23 @@ public class Main {
             Connection conexion = DriverManager.getConnection("jdbc:h2:~/practica5", "sa", "");
             // add application code here
 
-            StringBuilder s = new StringBuilder(" vacio");
+            StringBuilder s = new StringBuilder("");
 
             Statement stm = conexion.createStatement();
 
+            stm.executeUpdate("INSERT INTO estudiantes VALUES(00000001,'missigno','missigno','missigno')");
+
             ResultSet rs = stm.executeQuery("SELECT * FROM estudiantes");
 
+            if(!rs.isBeforeFirst()) s.append(" vacio");
+
             while(rs.next()) {
-                s.append(rs.getString("nombre"));
+                s.append("<br/>" + rs.getString("nombre"));
             }
 
             conexion.close();
 
-            return "Inicio CRUD Estudiantes" + s.toString();
+            return "Inicio CRUD Estudiantes " + s.toString();
         });
     }
 }
