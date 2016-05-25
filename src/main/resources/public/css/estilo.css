@@ -1,0 +1,12 @@
+img {
+    width: 30%;
+    height: 3%;
+    border: 1px solid black;
+    display: block;
+    float: left;
+}
+
+col {
+    border: 1px solid black;
+    float: left;
+}

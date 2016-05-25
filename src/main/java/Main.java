@@ -18,12 +18,27 @@ public class Main {
         //agregar pantalla de debug. Solo en desarrollo.
         enableDebugScreen();
 
-        //TODO Buscar nueva forma de usar configuracion de freemarker
+        //freemarker template engine
         Configuration configuration = new Configuration();
         configuration.setClassForTemplateLoading(Main.class, "/templates");
-        FreeMarkerEngine freeMarkerEngine = new FreeMarkerEngine(configuration);
+        FreeMarkerEngine freeMarker = new FreeMarkerEngine();
+        freeMarker.setConfiguration(configuration);
 
-        get("/", (req, res) -> {
+
+        get("/",(request, response) -> {
+           DB.mostrarEstudiantesPorConsola();
+
+            return "Revisa por la consola para ver el resultado";
+        });
+
+
+
+        /**
+        * Ejemplo con todas las cosas:
+         * jdbc
+         * freemarker
+        * */
+        get("/sample", (req, res) -> {
             //bd stuff
             StringBuilder s = new StringBuilder("");
 
@@ -43,6 +58,6 @@ public class Main {
             data.put("texto_ejemplo",s.toString());
 
             return new ModelAndView(data,"sample.ftl");
-        }, freeMarkerEngine);
+        }, freeMarker);
     }
 }
