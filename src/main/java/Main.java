@@ -26,7 +26,29 @@ public class Main {
         freeMarker.setConfiguration(configuration);
 
         //Rutas
-        get("/",(request, response) -> {
+
+        get("/home", (request, response) -> {
+            HashMap<String,Object> data = new HashMap<>();
+            return new ModelAndView(new HashMap<Object,Object>(),"home.ftl");
+        }, freeMarker);
+
+        get("/edit", (request, response) -> {
+            HashMap<String,Object> data = new HashMap<>();
+            return new ModelAndView(new HashMap<Object,Object>(),"edit_create.ftl");
+        }, freeMarker);
+
+        get("/create", (request, response) -> {
+            HashMap<String,Object> data = new HashMap<>();
+            return new ModelAndView(new HashMap<Object,Object>(),"edit_create.ftl");
+        }, freeMarker);
+
+        get("/view", (request, response) -> {
+            HashMap<String,Object> data = new HashMap<>();
+            return new ModelAndView(new HashMap<Object,Object>(),"view.ftl");
+        }, freeMarker);
+
+        //Rutas de ejemplo
+        get("/sample2",(request, response) -> {
             //template stuff
             Map<String, Object> data = new HashMap<>();
 
@@ -36,10 +58,6 @@ public class Main {
         }, freeMarker);
 
         /**
-        * Ejemplo con todas las cosas:
-         * jdbc
-         * freemarker
-        * */
         get("/sample", (req, res) -> {
             //bd stuff
             StringBuilder s = new StringBuilder("");
@@ -61,5 +79,6 @@ public class Main {
 
             return new ModelAndView(data,"sample.ftl");
         }, freeMarker);
+        */
     }
 }
