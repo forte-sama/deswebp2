@@ -9,7 +9,7 @@ public class Estudiante {
 
     private Estudiante() { }
 
-    public Estudiante(int matricula, String telefono, String apellidos, String nombres) {
+    public Estudiante(int matricula, String nombres, String apellidos, String telefono) {
         this.matricula = matricula;
         this.telefono = telefono;
         this.apellidos = apellidos;

@@ -4,6 +4,7 @@ import spark.ModelAndView;
 import spark.template.freemarker.FreeMarkerEngine;
 
 import java.sql.*;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,14 +25,15 @@ public class Main {
         FreeMarkerEngine freeMarker = new FreeMarkerEngine();
         freeMarker.setConfiguration(configuration);
 
-
+        //Rutas
         get("/",(request, response) -> {
-           DB.mostrarEstudiantesPorConsola();
+            //template stuff
+            Map<String, Object> data = new HashMap<>();
 
-            return "Revisa por la consola para ver el resultado";
-        });
+            data.put("estudiantes",DB.obtenerTodosLosEstudiantes());
 
-
+            return new ModelAndView(data,"sample.ftl");
+        }, freeMarker);
 
         /**
         * Ejemplo con todas las cosas:
