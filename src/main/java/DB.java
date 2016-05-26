@@ -20,6 +20,43 @@ public class DB {
         return h2con.createStatement();
     }
 
+    public static Estudiante obtenerEstudiante(int matricula) {
+        Estudiante est = null;
+
+        try {
+            ResultSet rs = DBManager().executeQuery("SELECT * FROM estudiantes WHERE matricula=" + matricula);
+
+            if(rs.next()) {
+                est = new Estudiante(rs.getInt("matricula"),
+                        rs.getString("nombre"),
+                        rs.getString("apellidos"),
+                        rs.getString("telefono"));
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Hubo algo raro con esa sentencia SQL...");
+            System.out.println("O con la conexion a la base de datos...");
+        }
+
+        return est;
+    }
+
+    public static boolean borrarEstudiante(int matricula) {
+        Estudiante est = null;
+
+        try {
+            int rows_affected = DBManager().executeUpdate("DELETE FROM estudiantes WHERE matricula=" + matricula);
+
+            return rows_affected > 0;
+        }
+        catch (SQLException e) {
+            System.out.println("Hubo algo raro con esa sentencia SQL...");
+            System.out.println("O con la conexion a la base de datos...");
+        }
+
+        return false;
+    }
+
     public static boolean crearEstudiante(int matricula, String nombres, String apellidos, String telefono) {
         String sql  = "INSERT INTO estudiantes values(";
         sql += matricula + ", ";
@@ -57,27 +94,6 @@ public class DB {
         Estudiante est = obtenerEstudiante(matricula);
 
         return est == null;
-    }
-
-    public static Estudiante obtenerEstudiante(int matricula) {
-        Estudiante est = null;
-
-        try {
-            ResultSet rs = DBManager().executeQuery("SELECT * FROM estudiantes WHERE matricula=" + matricula);
-
-            if(rs.next()) {
-                est = new Estudiante(rs.getInt("matricula"),
-                        rs.getString("nombre"),
-                        rs.getString("apellidos"),
-                        rs.getString("telefono"));
-            }
-        }
-        catch (SQLException e) {
-            System.out.println("Hubo algo raro con esa sentencia SQL...");
-            System.out.println("O con la conexion a la base de datos...");
-        }
-
-        return est;
     }
 
     public static Set<Estudiante> obtenerTodosLosEstudiantes() {

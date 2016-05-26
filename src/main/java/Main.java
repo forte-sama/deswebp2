@@ -208,9 +208,36 @@ public class Main {
             return new ModelAndView(data,"view.ftl");
         }, freeMarker);
 
-        get("/delete/:matricula",(request, response) ->{
-            return "Aqui se deberia borrar un estudiante";
-        });
+        get("/delete/:matricula",(request, response) -> {
+            HashMap<String,Object> data = new HashMap<>();
+
+            String matricula = request.params("matricula");
+
+            int int_mat = -1;
+
+            boolean exito = true;
+
+            try {
+                int_mat = Integer.parseInt(matricula);
+
+                if(DB.borrarEstudiante(int_mat)) {
+                    data.put("msg_type","success");
+                    data.put("msg", "Estudiante borrado con exito.");
+                }
+                else{
+                    exito = false;
+                }
+            } catch(NumberFormatException e) {
+                exito = false;
+            }
+
+            if(!exito) {
+                data.put("msg_type","error");
+                data.put("msg","Hubo un error borrando al estudiante con matricula " + matricula + "... Gracias a Dios.");
+            }
+
+            return new ModelAndView(data,"delete.ftl");
+        }, freeMarker);
     }
 
     private static boolean validarDatos(String nombres, String apellidos, String telefono) {
