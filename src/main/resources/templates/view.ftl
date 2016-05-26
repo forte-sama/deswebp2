@@ -5,18 +5,18 @@
     <link href="/css/estilo.css" rel="stylesheet" >
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Detalle Estudiante</title>
 </head>
 <body>
 <nav>
-    <div class="nav-wrapper light-blue darken-4">
+    <div class="nav-wrapper green darken-2">
         <a href="/home" class="right brand-logo">Practica2</a>
         <ul id="nav-mobile" class="left hide-on-med-and-down">
             <li>
                 <a href="/home"><i class="material-icons left">contacts</i> Home</a>
             </li>
             <li>
-                <a href="/nuevo"><i class="material-icons left">library_add</i> Nuevo Estudiante</a>
+                <a href="/new"><i class="material-icons left">library_add</i> Nuevo Estudiante</a>
             </li>
         </ul>
     </div>
@@ -55,10 +55,16 @@
                 </div>
             </div>
             <#else>
-            <h2>${error_msg}</h2>
+            <div class="card-panel red darken-3">
+                <p class="center-align white-text">
+                    ${error_msg}
+                </p>
+            </div>
             </#if>
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script src="/js/materialize.min.js"></script>
 </body>
 </html>

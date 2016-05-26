@@ -20,6 +20,28 @@ public class DB {
         return h2con.createStatement();
     }
 
+    public static boolean crearEstudiante(int matricula, String nombres, String apellidos, String telefono) {
+        String sql  = "INSERT INTO estudiantes values(";
+        sql        += matricula + ", ";
+        sql        += "'" + nombres   + "', ";
+        sql        += "'" + apellidos + "', ";
+        sql        += "'" + telefono  + "');";
+
+        try {
+            DBManager().executeUpdate(sql);
+        } catch (SQLException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean nuevaMatriculaValida(int matricula) {
+        Estudiante est = obtenerEstudiante(matricula);
+
+        return est == null;
+    }
+
     public static Estudiante obtenerEstudiante(int matricula) {
         Estudiante est = null;
 

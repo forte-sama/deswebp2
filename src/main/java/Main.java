@@ -1,10 +1,8 @@
 import freemarker.template.Configuration;
-import org.h2.jdbc.JdbcStatement;
+import org.jetbrains.annotations.Contract;
 import spark.ModelAndView;
 import spark.template.freemarker.FreeMarkerEngine;
 
-import java.sql.*;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +32,8 @@ public class Main {
         get("/home", (request, response) -> {
             HashMap<String,Object> data = new HashMap<>();
 
+            data.put("msg",request.headers("msg"));
+
             data.put("estudiantes",DB.obtenerTodosLosEstudiantes());
 
             return new ModelAndView(data,"home.ftl");
@@ -41,11 +41,60 @@ public class Main {
 
         get("/edit/:matricula", (request, response) -> {
             HashMap<String,Object> data = new HashMap<>();
+
+            data.put("action","edit");
+
             return new ModelAndView(data,"edit_create.ftl");
         }, freeMarker);
 
         get("/new", (request, response) -> {
             HashMap<String,Object> data = new HashMap<>();
+
+            data.put("action","new");
+
+            return new ModelAndView(data,"edit_create.ftl");
+        }, freeMarker);
+
+        post("/new",(request, response) -> {
+            HashMap<String,Object> data = new HashMap<>();
+            data.put("action","new");
+
+            String matricula = request.queryParams("matricula");
+            String nombres   = request.queryParams("nombres");
+            String apellidos = request.queryParams("apellidos");
+            String telefono  = request.queryParams("telefono");
+
+            boolean exito           = true;
+            boolean datosValidos    = validarDatos(nombres,apellidos,telefono);
+            boolean matriculaValida = true;
+
+            int int_mat = -1;
+
+            try {
+                int_mat = Integer.parseInt(matricula);
+                matriculaValida = DB.nuevaMatriculaValida(int_mat);
+            } catch (NumberFormatException e) {
+                matriculaValida = false;
+            }
+
+            if(datosValidos && matriculaValida) {
+                if(DB.crearEstudiante(int_mat,nombres,apellidos,telefono)) {
+                    data.put("msg", "Estudiante creado con exito.");
+                    data.put("msg_type", "success");
+                }
+                else {
+                    exito = false;
+                }
+            }
+            else {
+                exito = false;
+            }
+
+            if(!exito) {
+                data.put("msg","Intento fallido, hubo algun error.");
+                data.put("msg_type","error");
+            }
+
             return new ModelAndView(data,"edit_create.ftl");
         }, freeMarker);
 
@@ -63,53 +112,23 @@ public class Main {
                     data.put("estudiante",est);
                 }
                 else {
-                    data.put("error_msg","No hay un estudiante con esa matricula");
+                    data.put("error_msg","No hay un estudiante con matricula: " + mat);
                 }
-            }
-            catch (NumberFormatException e) {
-                //redireccionar a home con msg de error
-                response.redirect("/home");
-
-                return new ModelAndView(new HashMap<>(),"error.ftl");
+            } catch (NumberFormatException e) {
+                data.put("error_msg","No hay un estudiante con matricula: " + rawMatricula);
             }
 
             return new ModelAndView(data,"view.ftl");
         }, freeMarker);
 
         get("/delete/:matricula",(request, response) -> "Aqui se deberia borrar un estudiante");
+    }
 
-        //Rutas de ejemplo
-        get("/sample2",(request, response) -> {
-            //template stuff
-            Map<String, Object> data = new HashMap<>();
+    private static boolean validarDatos(String nombres, String apellidos, String telefono) {
+        boolean nombresValidos = !nombres.isEmpty() && nombres.length() <= 100;
+        boolean apellidosValidos = !apellidos.isEmpty() && apellidos.length() <= 100;
+        boolean telefonoValido = !telefono.isEmpty() && telefono.length() <= 50;
 
-            data.put("estudiantes",DB.obtenerTodosLosEstudiantes());
-
-            return new ModelAndView(data,"sample.ftl");
-        }, freeMarker);
-
-        /**
-        get("/sample", (req, res) -> {
-            //bd stuff
-            StringBuilder s = new StringBuilder("");
-
-            Connection conexion = DriverManager.getConnection("jdbc:h2:~/practica5", "sa", "");
-            Statement stm = conexion.createStatement();
-
-            ResultSet rs = stm.executeQuery("SELECT * FROM estudiantes");
-
-            if(!rs.isBeforeFirst()) s.append(" vacio");
-
-            while(rs.next()) {
-                s.append("<br/>" + rs.getString("nombre"));
-            }
-
-            //template stuff
-            Map<String, String> data = new HashMap<>();
-            data.put("texto_ejemplo",s.toString());
-
-            return new ModelAndView(data,"sample.ftl");
-        }, freeMarker);
-        */
+        return nombresValidos && apellidosValidos && telefonoValido;
     }
 }
