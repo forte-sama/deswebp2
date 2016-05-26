@@ -8,19 +8,7 @@
     <title>${action}</title>
 </head>
 <body>
-<nav>
-    <div class="nav-wrapper <#if action == "new">light-blue darken-4<#elseif action == "edit">orange darken-2</#if>">
-        <a href="/home" class="right brand-logo">Practica2</a>
-        <ul id="nav-mobile" class="left hide-on-med-and-down">
-            <li>
-                <a href="/home"><i class="material-icons left">contacts</i> Home</a>
-            </li>
-            <li <#if action == "new">class="active"</#if>>
-                <a href="/new"><i class="material-icons left">library_add</i> Nuevo Estudiante</a>
-            </li>
-        </ul>
-    </div>
-</nav>
+<#include "navbar.ftl">
 <div class="container">
     <div class="row"></div>
     <div class="row">
@@ -41,9 +29,9 @@
         <form
                 class="col s10 push-s1"
                 action="<#if action == "new">
-                        /new/
+                        /new
                         <#elseif action == "edit">
-                        /edit/
+                        /edit
                         </#if>"
                 method="post">
             <#include "form_fields_student.ftl">
@@ -76,7 +64,7 @@
         </#if>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script src="/js/jquery-2.2.4.js"></script>
 <script src="/js/materialize.min.js"></script>
 <script src="/js/form.js"></script>
 </body>

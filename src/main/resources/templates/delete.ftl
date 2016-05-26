@@ -8,19 +8,7 @@
     <title>Home</title>
 </head>
 <body>
-<nav>
-    <div class="nav-wrapper red darken-4">
-        <a href="/home" class="right brand-logo">Practica2</a>
-        <ul id="nav-mobile" class="left hide-on-med-and-down">
-            <li>
-                <a href="/home"><i class="material-icons left">contacts</i> Home</a>
-            </li>
-            <li>
-                <a href="/new"><i class="material-icons left">library_add</i> Nuevo Estudiante</a>
-            </li>
-        </ul>
-    </div>
-</nav>
+<#include "navbar.ftl">
 <div class="container">
     <div class="row"></div>
     <div class="row">
@@ -39,7 +27,7 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script src="/js/jquery-2.2.4.js"></script>
 <script src="/js/materialize.min.js"></script>
 </body>
 </html>

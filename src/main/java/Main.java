@@ -1,10 +1,8 @@
 import freemarker.template.Configuration;
-import org.jetbrains.annotations.Contract;
 import spark.ModelAndView;
 import spark.template.freemarker.FreeMarkerEngine;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import static spark.Spark.*;
 import static spark.debug.DebugScreen.enableDebugScreen;
@@ -29,16 +27,19 @@ public class Main {
             return "";
         });
 
+        /** Ver lista de estudiantes */
         get("/home", (request, response) -> {
             HashMap<String,Object> data = new HashMap<>();
-
+            data.put("action","home");
             data.put("msg",request.headers("msg"));
+
 
             data.put("estudiantes",DB.obtenerTodosLosEstudiantes());
 
             return new ModelAndView(data,"home.ftl");
         }, freeMarker);
 
+        /** Editar un usuario */
         get("/edit/:matricula", (request, response) -> {
             HashMap<String,Object> data = new HashMap<>();
             data.put("action","edit");
@@ -83,7 +84,8 @@ public class Main {
             return new ModelAndView(data,"edit_create.ftl");
         }, freeMarker);
 
-        post("/edit/", (request, response) -> {
+        /** Procesar edicion de un estudiante */
+        post("/edit", (request, response) -> {
             HashMap<String,Object> data = new HashMap<>();
             data.put("action","edit");
 
@@ -134,14 +136,15 @@ public class Main {
             return new ModelAndView(data,"edit_create.ftl");
         }, freeMarker);
 
+        /** Crear de un estudiante nuevo */
         get("/new", (request, response) -> {
             HashMap<String,Object> data = new HashMap<>();
-
             data.put("action","new");
 
             return new ModelAndView(data,"edit_create.ftl");
         }, freeMarker);
 
+        /** Procesar creacion de usuario nuevo */
         post("/new",(request, response) -> {
             HashMap<String,Object> data = new HashMap<>();
             data.put("action","new");
@@ -185,8 +188,10 @@ public class Main {
             return new ModelAndView(data,"edit_create.ftl");
         }, freeMarker);
 
+        /** Ver detalles de estudiante */
         get("/view/:matricula", (request, response) -> {
             HashMap<String,Object> data = new HashMap<>();
+            data.put("action","view");
 
             String rawMatricula = request.params("matricula");
 
@@ -208,8 +213,10 @@ public class Main {
             return new ModelAndView(data,"view.ftl");
         }, freeMarker);
 
+        /** Borrar estudiante */
         get("/delete/:matricula",(request, response) -> {
             HashMap<String,Object> data = new HashMap<>();
+            data.put("action","delete");
 
             String matricula = request.params("matricula");
 

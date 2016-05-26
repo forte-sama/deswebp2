@@ -1,6 +1,4 @@
-.custom {
-    margin: auto auto;
-    width: 60%;
-    border: 1px solid black;
-    float: left;
+.fill-window {
+    height: 550px;
+    overflow: scroll;
 }

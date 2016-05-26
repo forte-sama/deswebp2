@@ -13,8 +13,13 @@ public class DB {
     private DB() {}
 
     private static Statement DBManager() throws SQLException {
+        String url = "jdbc:h2:~/practica5";
+
         if(h2con == null) {
-            h2con = DriverManager.getConnection("jdbc:h2:~/practica5", "sa", "");
+            h2con = DriverManager.getConnection(url, "sa", "");
+        }
+        else if(h2con.isClosed()) {
+            h2con = DriverManager.getConnection(url, "sa", "");
         }
 
         return h2con.createStatement();
