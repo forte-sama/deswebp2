@@ -56,13 +56,21 @@ public class Main {
 
             try {
                 int mat = Integer.parseInt(rawMatricula);
+
+                Estudiante est = DB.obtenerEstudiante(mat);
+
+                if(est != null) {
+                    data.put("estudiante",est);
+                }
+                else {
+                    data.put("error_msg","No hay un estudiante con esa matricula");
+                }
             }
             catch (NumberFormatException e) {
                 //redireccionar a home con msg de error
-                response.header("error_msg","Hubo un error con codigo de estudiante: " + rawMatricula);
                 response.redirect("/home");
 
-                return new ModelAndView(data,"error.ftl");
+                return new ModelAndView(new HashMap<>(),"error.ftl");
             }
 
             return new ModelAndView(data,"view.ftl");

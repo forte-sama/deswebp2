@@ -8,20 +8,21 @@
     <title>Home</title>
 </head>
 <body>
-    <nav>
-        <div class="nav-wrapper teal lighten-2">
-            <a href="/home" class="right brand-logo">Practica2</a>
-            <ul id="nav-mobile" class="left hide-on-med-and-down">
-                <li class="active">
-                    <a href="/home"><i class="material-icons left">contacts</i> Home</a>
-                </li>
-                <li>
-                    <a href="/nuevo"><i class="material-icons left">library_add</i> Nuevo Estudiante</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <div class="container">
+<nav>
+    <div class="nav-wrapper teal lighten-2">
+        <a href="/home" class="right brand-logo">Practica2</a>
+        <ul id="nav-mobile" class="left hide-on-med-and-down">
+            <li class="active">
+                <a href="/home"><i class="material-icons left">contacts</i> Home</a>
+            </li>
+            <li>
+                <a href="/nuevo"><i class="material-icons left">library_add</i> Nuevo Estudiante</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+
         <div class="row">
             <div class="col s10 push-s1">
                 <table class="highlight centered">

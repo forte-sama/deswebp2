@@ -11,10 +11,9 @@
 <div class="container">
     <div class="row"></div>
     <div class="row">
-        <div class="col s12">
+        <div class="col s2 push-s5">
             <div class="chip">
-                ${msg}
-                <i class="material-icons">close</i>
+                <i class="material-icons">report_problem</i>
             </div>
         </div>
     </div>

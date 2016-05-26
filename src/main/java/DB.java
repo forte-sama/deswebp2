@@ -20,6 +20,27 @@ public class DB {
         return h2con.createStatement();
     }
 
+    public static Estudiante obtenerEstudiante(int matricula) {
+        Estudiante est = null;
+
+        try {
+            ResultSet rs = DBManager().executeQuery("SELECT * FROM estudiantes WHERE matricula=" + matricula);
+
+            if(rs.next()) {
+                est = new Estudiante(rs.getInt("matricula"),
+                        rs.getString("nombre"),
+                        rs.getString("apellidos"),
+                        rs.getString("telefono"));
+            }
+        }
+        catch (SQLException e) {
+            System.out.println("Hubo algo raro con esa sentencia SQL...");
+            System.out.println("O con la conexion a la base de datos...");
+        }
+
+        return est;
+    }
+
     public static Set<Estudiante> obtenerTodosLosEstudiantes() {
         ArrayList<Estudiante> resp = new ArrayList<>();
 
