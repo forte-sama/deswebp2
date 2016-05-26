@@ -22,14 +22,31 @@ public class DB {
 
     public static boolean crearEstudiante(int matricula, String nombres, String apellidos, String telefono) {
         String sql  = "INSERT INTO estudiantes values(";
-        sql        += matricula + ", ";
-        sql        += "'" + nombres   + "', ";
-        sql        += "'" + apellidos + "', ";
-        sql        += "'" + telefono  + "');";
+        sql += matricula + ", ";
+        sql += "'" + nombres   + "', ";
+        sql += "'" + apellidos + "', ";
+        sql += "'" + telefono  + "');";
 
         try {
             DBManager().executeUpdate(sql);
         } catch (SQLException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean actualizarEstudiante(int matricula, String nombres, String apellidos, String telefono) {
+        String sql  = "UPDATE estudiantes SET ";
+        sql += "nombre='" + nombres + "', ";
+        sql += "apellidos='" + apellidos + "', ";
+        sql += "telefono='" + telefono + "' ";
+        sql += "WHERE matricula=" + matricula;
+
+        try {
+            DBManager().executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
 

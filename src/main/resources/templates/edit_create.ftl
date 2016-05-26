@@ -15,7 +15,7 @@
             <li>
                 <a href="/home"><i class="material-icons left">contacts</i> Home</a>
             </li>
-            <li class="active">
+            <li <#if action == "new">class="active"</#if>>
                 <a href="/new"><i class="material-icons left">library_add</i> Nuevo Estudiante</a>
             </li>
         </ul>
@@ -37,12 +37,42 @@
         </#if>
     </div>
     <div class="row">
-        <#if action == "new">
-        <form class="col s10 push-s1" id="form_nuevo_estudiante" action="/new" method="post">
+        <#if action == "new" || action == "edit">
+        <form
+                class="col s10 push-s1"
+                action="<#if action == "new">
+                        /new/
+                        <#elseif action == "edit">
+                        /edit/
+                        </#if>"
+                method="post">
             <#include "form_fields_student.ftl">
+            <div class="row">
+                <div class="col s6">
+                    <button class="btn btn-large waves-effect waves-light green darken-2" type="submit" name="submit">
+                        <#if action == "new">
+                            Crear Nuevo Estudiante
+                        <#elseif action == "edit">
+                            Completar Edicion
+                        </#if>
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+                <#if action == "edit">
+                    <div class="col s5 push-s1">
+                        <a href="/delete/<#if matricula??>${matricula}</#if>" class="btn waves-effect waves-light red darken-4" onClick="return confirm('Seguro que desea borrar el estudiante actual?')">
+                            Borrar Estudiante
+                            <i class="material-icons right">delete</i>
+                        </a>
+                    </div>
+                </#if>
+            </div>
         </form>
         <#else>
-        <i class="material-icons">report_problem</i>
+        <div class="card-panel green darken-1">
+            <p class="center-align white-text">
+                O Talves entraste a esta pagina por error.
+            </p>
         </#if>
     </div>
 </div>

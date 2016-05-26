@@ -41,8 +41,95 @@ public class Main {
 
         get("/edit/:matricula", (request, response) -> {
             HashMap<String,Object> data = new HashMap<>();
-
             data.put("action","edit");
+
+            int int_mat = -1;
+            String matricula = request.params("matricula");
+
+            boolean numeroMatriculaValido = true;
+
+            try {
+                int_mat = Integer.parseInt(matricula);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                numeroMatriculaValido = false;
+            }
+
+            boolean matriculaValida = true;
+
+            if(numeroMatriculaValido) {
+                Estudiante est = DB.obtenerEstudiante(int_mat);
+
+                if(est != null) {
+                    data.put("matricula","" + est.getMatricula());
+                    data.put("nombres",est.getNombres());
+                    data.put("apellidos",est.getApellidos());
+                    data.put("telefono",est.getTelefono());
+                }
+                else {
+                    matriculaValida = false;
+                }
+            }
+            else {
+                matriculaValida = false;
+            }
+
+            if (!matriculaValida) {
+                data.put("action","error");
+                data.put("msg_type","error");
+                data.put("msg","No hay un estudiante con la matricula: " + int_mat);
+            }
+
+            return new ModelAndView(data,"edit_create.ftl");
+        }, freeMarker);
+
+        post("/edit/", (request, response) -> {
+            HashMap<String,Object> data = new HashMap<>();
+            data.put("action","edit");
+
+            String matricula = request.queryParams("matricula");
+            String nombres   = request.queryParams("nombres");
+            String apellidos = request.queryParams("apellidos");
+            String telefono  = request.queryParams("telefono");
+
+            boolean exito           = true;
+            boolean datosValidos    = validarDatos(nombres,apellidos,telefono);
+            boolean matriculaValida = true;
+
+            int int_mat = -1;
+
+            try {
+                int_mat = Integer.parseInt(matricula);
+                Estudiante est = DB.obtenerEstudiante(int_mat);
+
+                if(est == null) {
+                    matriculaValida = false;
+                }
+            } catch (NumberFormatException e) {
+                matriculaValida = false;
+            }
+
+            if(datosValidos && matriculaValida) {
+                if(DB.actualizarEstudiante(int_mat,nombres,apellidos,telefono)) {
+                    response.redirect("/home");
+                }
+                else {
+                    exito = false;
+                }
+            }
+            else {
+                exito = false;
+            }
+
+            if(!exito) {
+                data.put("matricula",matricula);
+                data.put("nombres",nombres);
+                data.put("apellidos",apellidos);
+                data.put("telefono",matricula);
+
+                data.put("msg","Intento fallido, hubo algun error.");
+                data.put("msg_type","error");
+            }
 
             return new ModelAndView(data,"edit_create.ftl");
         }, freeMarker);
@@ -121,7 +208,9 @@ public class Main {
             return new ModelAndView(data,"view.ftl");
         }, freeMarker);
 
-        get("/delete/:matricula",(request, response) -> "Aqui se deberia borrar un estudiante");
+        get("/delete/:matricula",(request, response) ->{
+            return "Aqui se deberia borrar un estudiante";
+        });
     }
 
     private static boolean validarDatos(String nombres, String apellidos, String telefono) {
