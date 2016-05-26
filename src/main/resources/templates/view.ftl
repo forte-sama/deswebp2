@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <div class="row">
-            <div class="col l12">
+            <div class="col s12">
                 <div class="chip">
                     Edit or create
                     <i class="material-icons">close</i>

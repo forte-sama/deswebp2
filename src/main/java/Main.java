@@ -26,26 +26,49 @@ public class Main {
         freeMarker.setConfiguration(configuration);
 
         //Rutas
+        get("/", (request, response) -> {
+            response.redirect("/home");
+            return "";
+        });
 
         get("/home", (request, response) -> {
             HashMap<String,Object> data = new HashMap<>();
-            return new ModelAndView(new HashMap<Object,Object>(),"home.ftl");
+
+            data.put("estudiantes",DB.obtenerTodosLosEstudiantes());
+
+            return new ModelAndView(data,"home.ftl");
         }, freeMarker);
 
-        get("/edit", (request, response) -> {
+        get("/edit/:matricula", (request, response) -> {
             HashMap<String,Object> data = new HashMap<>();
-            return new ModelAndView(new HashMap<Object,Object>(),"edit_create.ftl");
+            return new ModelAndView(data,"edit_create.ftl");
         }, freeMarker);
 
-        get("/create", (request, response) -> {
+        get("/new", (request, response) -> {
             HashMap<String,Object> data = new HashMap<>();
-            return new ModelAndView(new HashMap<Object,Object>(),"edit_create.ftl");
+            return new ModelAndView(data,"edit_create.ftl");
         }, freeMarker);
 
-        get("/view", (request, response) -> {
+        get("/view/:matricula", (request, response) -> {
             HashMap<String,Object> data = new HashMap<>();
-            return new ModelAndView(new HashMap<Object,Object>(),"view.ftl");
+
+            String rawMatricula = request.params("matricula");
+
+            try {
+                int mat = Integer.parseInt(rawMatricula);
+            }
+            catch (NumberFormatException e) {
+                //redireccionar a home con msg de error
+                response.header("error_msg","Hubo un error con codigo de estudiante: " + rawMatricula);
+                response.redirect("/home");
+
+                return new ModelAndView(data,"error.ftl");
+            }
+
+            return new ModelAndView(data,"view.ftl");
         }, freeMarker);
+
+        get("/delete/:matricula",(request, response) -> "Aqui se deberia borrar un estudiante");
 
         //Rutas de ejemplo
         get("/sample2",(request, response) -> {
